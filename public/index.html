@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>图片后台管理系统</title>
+    <link rel="stylesheet" type="text/css" href="css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/base.css" />
+    <link rel="stylesheet" type="text/css" href="css/Hui-iconfont/1.0.8/iconfont.css" />
+    <script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <style type="text/css">
+        #header{
+            height: 42px;background: #cdccdc;
+        }
+        #header .header{
+            height: 42px;border-bottom: 1px solid #666;
+        }
+        .header .topLeft{
+            height: 42px;width: 200px;text-align: center;font-size: 16px;font-weight: 900;line-height: 42px;
+        } 
+        .header .topRight{
+            height: 42px;width: 200px;
+        }
+        .header .topRight span{
+            display: inline-block;float: left;height: 42px;width: 50px;margin-left: 10px;
+        }
+        .header .topRight span a{
+            display: inline-block;height: 42px;font-size: 18px;font-weight: 900;color: #666;font-family: '楷体';line-height: 42px;text-align: center;
+        }
+        .header .topRight span a:hover{
+            text-decoration: underline;
+            color: blue;
+        }
+        .breadcrumb{
+            background: #dedede;
+        }
+        .page-container{
+            margin-top: 20px;
+        }
+        #checkbox,#allCheckbox{
+            width: 16px;height: 16px;
+        }
+        .main{
+            background: #ddd;
+        }
+        .main #Show{
+            background: #FFF;border: 1px solid #999;margin: 20px 0;
+        }
+        .r{
+            font-size: 14px;line-height: 30px;
+        }
+        table thead th{
+            font-size: 16px;font-weight: 900;
+        }
+        table tbody td{
+            font-size: 14px;
+        }
+        #addShow,#addShow1,#addShow2{
+            position: fixed;left: 0px;top: 0px;right: 0px;bottom: 0px;background: #000;opacity: 0.8;display: none;
+        }
+        .page-container2,.page-container3{
+            width: 620px;padding: 10px 10px 20px 10px;border: 1px solid #aaa;background: #fff;opacity: 1;position: fixed;left: 25%;top: 10%;z-index: 1;display: none;
+        }
+        #imgShowBox{
+             width: 1024px;height: 576px;border: 1px solid #bbb;background: #fff;opacity: 1;position: fixed;left: 10%;top: 5%;z-index: 1;display: none;
+        }
+        #imgShowBox #imgB{
+            width: 1024px;height: 576px;
+        }
+        .kong{
+            height: 36px;margin-bottom: 10px;
+        }
+        .kong span{
+            float: right;display: inline-block;width:36px;height: 36px;font-size: 20px;line-height: 36px;text-align: center;background: #dedede;cursor: default;
+        }
+        .kong span:hover{
+            background: #cdcdcd;
+        }
+        .til{
+            height: 36px;font-size: 18px;color: #666;font-weight: 900;line-height: 36px;text-align: center;margin-bottom: 20px;background: #efefef;
+        }
+        .shangchuan,.shangchuan1{
+            display: inline-block;width: 50px;height: 20px;font-size: 12px;line-height: 20px;text-align: center;border: 1px solid #999;background: #efefef;cursor: default;
+        }
+        .shangchuan:hover{
+            border: 1px solid #333;
+        }
+        .tab{
+            width: 200px;;height: 36px;margin: 20px auto 10px;
+        }
+        .tab button{
+            float: left;width: 60px;height: 26px;border: 1px solid #999;margin: 5px 8px;color: #666;
+        }
+        .tab button:hover{
+            border: 1px solid #666;color: #333;
+        }
+        .tab span{
+            float: left;display: block;width: 26px;height: 26px;margin: 5px 8px;font-size: 14px;font-weight: 900;color: #333;line-height: 26px;text-align: center;
+        }
+        #total{
+            font-size: 18px;color: #666;
+        }
+        .tr_img img{
+            cursor: pointer;
+        }
+        #up,#down{
+            width: 80px;height: 30px;font-size: 12px;line-height: 30px;border: 1px solid #999;border-radius: 5px;font-weight: 900;margin-left: 20px;
+        }
+        #up:hover{
+            background: #58bc58;border: 1px solid #f60;color: #eee;cursor: pointer;
+        }
+        #down:hover{
+            background: #58bc58;border: 1px solid #f60;color: #eee;cursor: pointer;
+        }
+    </style>
+
+</head>
+<body>
+    <header id="header">
+        <header class="header con">
+            <div class="topLeft fl">
+                图片管理系统
+            </div>
+            <div class="topRight fr">
+                <span id="login"><a href="login.html">登录</a></span>
+                <span id="reg"><a href="reg.html">注册</a></span>
+            </div>
+        </header>
+    </header>
+    <nav id="nav" class="breadcrumb">
+        <nav class="breadcrumb con">
+            <i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 图片管理 <span class="c-gray en"></span><a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+        </nav>
+    </nav>
+    <div class="con">
+        <div class="page-container">
+            <div class="text-c">
+                <input type="text" name="" id="souText" placeholder=" 图片名称" style="width:250px" class="input-text">
+                <button name="" id="search" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜图片</button>
+            </div>
+        </div>
+        <div class="cl pd-5 bg-1 bk-gray mt-20">
+            <span class="l"><a href="javascript:;" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a class="btn btn-primary radius" ><i class="Hui-iconfont">&#xe600;</i> 添加图片</a></span> <span class="r">共有数据： <strong id="total">0</strong> &nbsp;条</span>
+            <button id="up" title="点击排序">升序（ID）</button>
+            <button id="down" title="点击排序">降序（ID）</button> 
+        </div>
+    </div>
+    
+    <main class="main con">
+        <div id="Show">
+            <table class="table table-border table-bordered table-bg table-hover table-sort">
+                <thead>
+                    <tr class="text-c">
+                        <th width="80" class="check"><input name="" type="checkbox" id="allCheckbox" value="">&nbsp;全选</th>
+                        <th width="120">ID</th>
+                        <th width="160">分类</th>
+                        <th width="240">预览图</th>
+                        <th width="300">图片名称</th>
+                        <th width="200">更新时间</th>
+                        <th width="200">操作</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                    <!-- <tr class="text-c">
+                        <td><input name="" type="checkbox" id="checkbox" class="checkbox_0" value=""></td>
+                        <td>1</td>
+                        <td>分类名称</td>
+                        <td><img width="210" class="picture-thumb" src="image/200x150.jpg"></td>
+                        <td class="text-l">现代简约 白色 餐厅</td>
+                        <td>2014-6-11 11:11:42</td>
+                        <td class="td-manage"><a style="text-decoration:none" class="ml-5" onClick="picture_edit('图库编辑','picture-add.html','10001')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="delList ml-5" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+                    </tr>
+                    <tr class="text-c">
+                        <td><input name="" type="checkbox" id="checkbox" value=""></td>
+                        <td>2</td>
+                        <td>分类名称</td>
+                        <td><img width="210" class="picture-thumb" src="image/200x150.jpg"></td>
+                        <td class="text-l">现代简约 白色 餐厅</td>
+                        <td>2014-6-11 11:11:42</td>
+                        <td class="td-manage"><a style="text-decoration:none" class="ml-5" onClick="picture_edit('图库编辑','picture-add.html','10001')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class=" delList ml-5" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+                    </tr> -->
+                </tbody>
+            </table>
+            <div class="tab">
+                <button class="cutBtn">上一页</button><span class="tabNum">1</span><button class="addBtn">下一页</button>
+            </div>
+        </div>
+    </main>
+    
+    <div id="addShow"></div>
+    <div class="page-container2">
+        <div class="kong">
+            <span id="addClose"> X </span>
+        </div>
+        <div class="til">
+            添加图片
+        </div>
+        <form class="form form-horizontal" id="form-article-add">
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><!-- <span class="c-red">*</span> -->ID：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" class="input-text" value="" placeholder="" id="imgId" name="">
+                </div>
+            </div>
+            <div class="row cl">
+                 <label class="form-label col-xs-4 col-sm-2">图片类型：</label>
+                 <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" class="input-text" value="" placeholder="" id="imgType" name="">
+                </div>
+            </div>
+            <div class="row cl">
+                 <label class="form-label col-xs-4 col-sm-2">图片名称：</label>
+                 <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" class="input-text" value="" placeholder="" id="imgName" name="">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2">上传图片：</label>
+                <form enctype="multipart/form-data" method="post">
+                    <input type="file" name='image' id="imagelist">
+                </form>
+                <!-- <button id="btn-star" class="btn btn-default btn-uploadstar radius ml-10" onclick="Req_ajax();">开始上传</button> -->
+                <span class="shangchuan" onclick="Req_ajax();">上传</span>
+                <span id="status"></span>
+                <img id="img" src="" width="320px" height="180px">
+
+            </div>
+            <div class="row cl" style="margin-top: 10px;">
+                <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                    <button onclick="Insert_ajax();" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 提交审核</button>
+                    <button class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div id="addShow1"></div>
+    <div class="page-container3">
+        <div class="kong">
+            <span id="addClose1"> X </span>
+        </div>
+        <div class="til">
+            修改信息
+        </div>
+        <form class="form form-horizontal" id="form-article-add">
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><!-- <span class="c-red">*</span> -->ID：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" class="input-text" value="" placeholder="" id="imgId1" name="">
+                </div>
+            </div>
+            <div class="row cl">
+                 <label class="form-label col-xs-4 col-sm-2">图片类型：</label>
+                 <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" class="input-text" value="" placeholder="" id="imgType1" name="">
+                </div>
+            </div>
+            <div class="row cl">
+                 <label class="form-label col-xs-4 col-sm-2">图片名称：</label>
+                 <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" class="input-text" value="" placeholder="" id="imgName1" name="">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2">修改图片：</label>
+                <form enctype="multipart/form-data" method="post">
+                    <input type="file" name='image' id="imagelist1">
+                </form>
+                <!-- <button id="btn-star" class="btn btn-default btn-uploadstar radius ml-10" onclick="Req_ajax();">开始上传</button> -->
+                <span class="shangchuan1" onclick="Req_ajax2();">重新上传</span>
+                <span id="status"></span>
+                <img id="img1" src="" width="320px" height="180px">
+
+            </div>
+            <div class="row cl" style="margin-top: 10px;">
+                <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                    <button onclick="Insert_ajax2();" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 提交修改</button>
+                    <button class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div id="addShow2"></div>
+    <div id="imgShowBox">
+        <img id="imgB" src="" alt="" />
+    </div>
+    
+    <script type="text/javascript">
+
+   // 添加图片
+        $('.btn-primary').on('click',function() {
+            $('#addShow').show();
+            $('.page-container2').show();
+
+        });
+
+        $('#addClose').on('click',function() {
+            $('#addShow').hide();
+            $('.page-container2').hide();
+            $('#imagelist').val('');
+            $('#img').attr('src','');
+        });
+
+        $('.btn-default').on('click',function() {
+            $('#addShow').hide();
+            $('.page-container2').hide();
+            $('#imagelist').val('');
+            $('#img').attr('src','');
+            $('input').val('');
+        });
+
+
+        // $('.checkbox_0').on('mouseover',function(){
+        //     console.log($('.checkbox_0'));
+
+        //     if($(this).is(':checked')){
+        //         $('#checkbox').atrr('checked','checked');
+        //     }
+        // });
+
+
+        var OL_Action_Root = "http://127.0.0.1:3000";
+        var url = '';
+        var url1 = '';
+
+
+  // 上传图片到后端
+
+   function Req_ajax() {   
+     // console.log(111)
+     console.log($("#imagelist"))
+     var formData = new FormData()//创建一个formdata对象
+     console.log(formData)
+     formData.append("test",$("#imagelist")[0].files[0])  
+      console.log(formData)
+       console.log(formData.get('test'))
+     
+     $.ajax({
+         url: OL_Action_Root+'/upload/img',
+         type: 'POST',
+         data: formData,
+         cache: false,
+         contentType: false,
+         processData: false,
+
+         success: function(data){
+             var res = data;
+            // console.log(666);
+             if(res.err == 0)
+             {
+                 $('#img').attr('src',OL_Action_Root + res.data);
+                 url = OL_Action_Root+res.data;
+             }
+             else
+             {
+                 document.getElementById("status").innerHTML = "<span style='color:#EF0000'>文件上传失败！<br>原因是："+res.msg+"</span>";
+             }
+         },
+         error: function(jqXHR, textStatus, errorThrown){
+             document.getElementById("status").innerHTML = "<span style='color:#EF0000'>连接不到服务器，请检查网络！</span>";
+         }
+     });
+ }
+
+
+ // 向后端数据库中添加上传的图片数据
+
+ function Insert_ajax() {
+
+    var id = $('#imgId').val();
+    var type = $('#imgType').val();
+    var name = $('#imgName').val();
+    var time = showTime();
+
+    console.log(id,type,name,url);
+
+    $.ajax({
+
+         url: OL_Action_Root+'/goods/addGoods',
+         type: 'POST',
+         data: {
+            id: id,
+            type: type,
+            imgpath: url,
+            name: name,
+            time: time
+         },
+         async: true,
+
+         success: function(){
+            console.log(666);
+         }
+
+    });
+
+    alert('图片添加成功！');
+    // 刷新页面
+    location.reload();
+
+}
+
+    // 排序 
+    
+    var ups = 0;
+    
+    // 点击升序
+
+    $('#up').on('click',function(){
+
+              // 前端请求数据，渲染页面
+
+    $.ajax({
+
+         url: OL_Action_Root+'/goods/getGoods',
+         type: 'POST',
+         data:{
+            page: tabNum,
+            pagesize: 3
+         },
+         async: true,
+         // cache: false,
+         // contentType: false,
+         // processData: false,
+
+         success: function(data){
+
+            // console.log(data);
+            var goodslists = data.data.goodslist;
+            goodslists.sort(compareUp);
+            var totalNum = data.data.total;
+            console.log(totalNum);
+            // 总条数
+            $('#total').html(totalNum);
+
+            $('#tbody').html(goodslists.map(function(item){
+                    return `
+                    <tr class="text-c" data-id="${item.id}">
+                        <td><input name="" type="checkbox" id="checkbox" class="checkbox_0" value=""></td>
+                        <td class="tr_id">${item.id}</td>
+                        <td class="tr_type">${item.type}</td>
+                        <td class="tr_img"><img width="210" height="120px" class="picture-thumb" src="${item.imgpath}" title="点击图片,查看原图"></td>
+                        <td class="text-l">${item.name}</td>
+                        <td class="time">${item.time}</td>
+                        <td class="td-manage"><a style="text-decoration:none" class="edit ml-5" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="delList ml-5" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+                    </tr> `
+                }).join(''));
+
+            // 点击预览图，查看原图大图
+            $('.picture-thumb').on('click',function(){
+
+                $('#addShow2').show();
+                $('#imgShowBox').show();
+                $('#imgB').attr('src',$(this).attr('src'));
+
+                $('#addShow2').on('click',function(){
+                    
+                    $('#addShow2').hide();
+                    $('#imgShowBox').hide();
+                
+                });
+
+            });
+
+
+            $('.delList').on('click',function() {
+                var mes = confirm('确认删除？');
+                if(mes){
+                    $(this).parents('tr').remove();
+                    var ids = $(this).parents('.text-c').attr('data-id');
+                    console.log(ids)
+
+                    $.ajax({
+
+                         url: OL_Action_Root+'/goods/delGoods',
+                         type: 'POST',
+                         data:{
+                            id: ids
+                         },
+                         async: true,
+
+                         success: function(data){
+                          // console.log(888)  
+                         }
+
+                    });
+
+                    // 删除成功后，刷新页面
+                    location.reload();
+                }else{
+
+                }
+                
+            });
+
+            // 全选
+            var isChecked = true;
+            $('#allCheckbox').on('click',function(){
+                console.log(666)
+                //prop() 添加属性(行为的)
+                //attr（）添加属性
+                if(isChecked){
+                    $('#allCheckbox').prop('checked','checked');  // 勾选
+                    $('#checkbox').prop('checked','checked');
+                    let arr = checkNum();
+
+                } 
+                else{
+                    $('#allCheckbox').removeAttr('checked');  // 取消勾选
+                    $('#checkboc').removeAttr('checked');
+                    let arr = checkNum();
+
+                }
+                isChecked = !isChecked;
+            });
+
+            // 勾选的数量
+            function checkNum(){
+                let arr = []; //创建一个空数组，存放勾选项的索引值
+                let len = $('.good_check input').size();
+                for(let i=0;i<len;i++){
+                    if($('.good_check input').eq(i).prop('checked')){
+                        arr.push(i);
+                    }
+                }
+                // 返回数组arr
+                return arr;
+            }
+
+            // 全选补充
+            $('#Show').on('click','#checkbox',function(){
+                let arr = checkNum();
+                if(arr.length == $('#checkbox').size()){
+                    $('#allCheckbox').prop('checked','checked');
+                }
+                else{
+                    $('#allCheckbox').removeAttr('checked');
+                }
+            });
+
+
+            // 修改信息
+     
+             $('.edit').on('click',function() {
+                    $('#addShow1').show();
+                    $('.page-container3').show();
+
+                    var img_id = $(this).parents('.text-c').children('.tr_id').html();
+                    var img_type = $(this).parents('.text-c').children('.tr_type').html();
+                    var img_url = $(this).parents('.text-c').children('.tr_img').children('.picture-thumb').attr('src');
+                    var img_name = $(this).parents('.text-c').children('.text-l').html();
+                    // console.log(img_id,img_type,img_url,img_name);
+                    
+                    $('#imgId1').val(img_id);
+                    $('#imgType1').val(img_type);
+                    $('#img1').attr('src',img_url);
+                    $('#imgName1').val(img_name);
+                    url = img_url;
+
+
+                });
+
+                $('#addClose1').on('click',function() {
+                    $('#addShow1').hide();
+                    $('.page-container3').hide();
+                    $('#imagelist').val('');
+                    $('#img').attr('src','');
+                });
+
+                $('.btn-default').on('click',function() {
+                    $('#addShow1').hide();
+                    $('.page-container3').hide();
+                    $('#imagelist').val('');
+                    $('#img').attr('src','');
+                    $('input').val('');
+                });
+
+        }
+
+      });
+        
+    // console.log(ups);
+        ups = 1;
+
+    });
+
+
+    // 点击降序
+
+    $('#down').on('click',function(){
+
+        // 前端请求数据，渲染页面
+
+    $.ajax({
+
+         url: OL_Action_Root+'/goods/getGoods',
+         type: 'POST',
+         data:{
+            page: tabNum,
+            pagesize: 3
+         },
+         async: true,
+         // cache: false,
+         // contentType: false,
+         // processData: false,
+
+         success: function(data){
+
+            // console.log(data);
+            var goodslists = data.data.goodslist;
+            goodslists.sort(compareDown);
+            var totalNum = data.data.total;
+            console.log(totalNum);
+            // 总条数
+            $('#total').html(totalNum);
+
+            $('#tbody').html(goodslists.map(function(item){
+                    return `
+                    <tr class="text-c" data-id="${item.id}">
+                        <td><input name="" type="checkbox" id="checkbox" class="checkbox_0" value=""></td>
+                        <td class="tr_id">${item.id}</td>
+                        <td class="tr_type">${item.type}</td>
+                        <td class="tr_img"><img width="210" height="120px" class="picture-thumb" src="${item.imgpath}" title="点击图片,查看原图"></td>
+                        <td class="text-l">${item.name}</td>
+                        <td class="time">${item.time}</td>
+                        <td class="td-manage"><a style="text-decoration:none" class="edit ml-5" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="delList ml-5" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+                    </tr> `
+                }).join(''));
+
+            // 点击预览图，查看原图大图
+            $('.picture-thumb').on('click',function(){
+
+                $('#addShow2').show();
+                $('#imgShowBox').show();
+                $('#imgB').attr('src',$(this).attr('src'));
+
+                $('#addShow2').on('click',function(){
+
+                    $('#addShow2').hide();
+                    $('#imgShowBox').hide();
+                
+                });
+
+            });
+
+
+            $('.delList').on('click',function() {
+                var mes = confirm('确认删除？');
+                if(mes){
+                    $(this).parents('tr').remove();
+                    var ids = $(this).parents('.text-c').attr('data-id');
+                    console.log(ids)
+
+                    $.ajax({
+
+                         url: OL_Action_Root+'/goods/delGoods',
+                         type: 'POST',
+                         data:{
+                            id: ids
+                         },
+                         async: true,
+
+                         success: function(data){
+                          // console.log(888)  
+                         }
+
+                    });
+
+                    // 删除成功后，刷新页面
+                    location.reload();
+                }else{
+
+                }
+                
+            });
+
+            // 全选
+            var isChecked = true;
+            $('#allCheckbox').on('click',function(){
+                console.log(666)
+                //prop() 添加属性(行为的)
+                //attr（）添加属性
+                if(isChecked){
+                    $('#allCheckbox').prop('checked','checked');  // 勾选
+                    $('#checkbox').prop('checked','checked');
+                    let arr = checkNum();
+
+                } 
+                else{
+                    $('#allCheckbox').removeAttr('checked');  // 取消勾选
+                    $('#checkboc').removeAttr('checked');
+                    let arr = checkNum();
+
+                }
+                isChecked = !isChecked;
+            });
+
+            // 勾选的数量
+            function checkNum(){
+                let arr = []; //创建一个空数组，存放勾选项的索引值
+                let len = $('.good_check input').size();
+                for(let i=0;i<len;i++){
+                    if($('.good_check input').eq(i).prop('checked')){
+                        arr.push(i);
+                    }
+                }
+                // 返回数组arr
+                return arr;
+            }
+
+            // 全选补充
+            $('#Show').on('click','#checkbox',function(){
+                let arr = checkNum();
+                if(arr.length == $('#checkbox').size()){
+                    $('#allCheckbox').prop('checked','checked');
+                }
+                else{
+                    $('#allCheckbox').removeAttr('checked');
+                }
+            });
+
+
+            // 修改信息
+     
+             $('.edit').on('click',function() {
+                    $('#addShow1').show();
+                    $('.page-container3').show();
+
+                    var img_id = $(this).parents('.text-c').children('.tr_id').html();
+                    var img_type = $(this).parents('.text-c').children('.tr_type').html();
+                    var img_url = $(this).parents('.text-c').children('.tr_img').children('.picture-thumb').attr('src');
+                    var img_name = $(this).parents('.text-c').children('.text-l').html();
+                    // console.log(img_id,img_type,img_url,img_name);
+                    
+                    $('#imgId1').val(img_id);
+                    $('#imgType1').val(img_type);
+                    $('#img1').attr('src',img_url);
+                    $('#imgName1').val(img_name);
+                    url = img_url;
+
+
+                });
+
+                $('#addClose1').on('click',function() {
+                    $('#addShow1').hide();
+                    $('.page-container3').hide();
+                    $('#imagelist').val('');
+                    $('#img').attr('src','');
+                });
+
+                $('.btn-default').on('click',function() {
+                    $('#addShow1').hide();
+                    $('.page-container3').hide();
+                    $('#imagelist').val('');
+                    $('#img').attr('src','');
+                    $('input').val('');
+                });
+
+        }
+
+      });
+
+    // console.log(ups);
+        ups = 2;
+
+    });
+
+
+
+
+    // 页码，分页请求数据显示
+    
+    // 点击下一页
+    $('.addBtn').on('click',function next(){
+        var num = $('.tabNum').html();
+        num++;
+        if(num >= 5){
+            num = 5;
+        }
+        $('.tabNum').html(num);
+
+        // 前端请求数据，渲染页面
+        
+        console.log(num);
+
+    $.ajax({
+
+         url: OL_Action_Root+'/goods/getGoods',
+         type: 'POST',
+         data:{
+            page: num,
+            pagesize: 3
+         },
+         async: true,
+         // cache: false,
+         // contentType: false,
+         // processData: false,
+
+         success: function(data){
+            
+            var goodslists = data.data.goodslist;
+            console.log(goodslists);
+            // 判断，排序
+            if(ups == 1){
+                goodslists.sort(compareUp);
+            }else if(ups == 2){
+                goodslists.sort(compareDown);
+            }
+
+            $('#tbody').html(goodslists.map(function(item){
+                    return `
+                    <tr class="text-c" data-id="${item.id}">
+                        <td><input name="" type="checkbox" id="checkbox" class="checkbox_0" value=""></td>
+                        <td class="tr_id">${item.id}</td>
+                        <td class="tr_type">${item.type}</td>
+                        <td class="tr_img"><img width="210" height="120px" class="picture-thumb" src="${item.imgpath}" title="点击图片,查看原图"></td>
+                        <td class="text-l">${item.name}</td>
+                        <td class="time">${item.time}</td>
+                        <td class="td-manage"><a style="text-decoration:none" class="edit ml-5" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="delList ml-5" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+                    </tr> `
+                }).join(''));
+
+
+            // 点击预览图，查看原图大图
+            $('.picture-thumb').on('click',function(){
+
+                $('#addShow2').show();
+                $('#imgShowBox').show();
+                $('#imgB').attr('src',$(this).attr('src'));
+
+                $('#addShow2').on('click',function(){
+
+                    $('#addShow2').hide();
+                    $('#imgShowBox').hide();
+                
+                });
+
+            });
+
+
+            $('.delList').on('click',function() {
+                var mes = confirm('确认删除？');
+                if(mes){
+                    $(this).parents('tr').remove();
+                    var ids = $(this).parents('.text-c').attr('data-id');
+                    console.log(ids)
+
+                    $.ajax({
+
+                         url: OL_Action_Root+'/goods/delGoods',
+                         type: 'POST',
+                         data:{
+                            id: ids
+                         },
+                         async: true,
+
+                         success: function(data){
+                          // console.log(888)  
+                         }
+
+                    });
+
+                    // 删除成功后，刷新页面
+                    location.reload();
+                }else{
+
+                }
+                
+            });
+
+
+            // 修改信息
+     
+             $('.edit').on('click',function() {
+                    $('#addShow1').show();
+                    $('.page-container3').show();
+
+                    var img_id = $(this).parents('.text-c').children('.tr_id').html();
+                    var img_type = $(this).parents('.text-c').children('.tr_type').html();
+                    var img_url = $(this).parents('.text-c').children('.tr_img').children('.picture-thumb').attr('src');
+                    var img_name = $(this).parents('.text-c').children('.text-l').html();
+                    // console.log(img_id,img_type,img_url,img_name);
+                    
+                    $('#imgId1').val(img_id);
+                    $('#imgType1').val(img_type);
+                    $('#img1').attr('src',img_url);
+                    $('#imgName1').val(img_name);
+                    url = img_url;
+
+
+                });
+
+                $('#addClose1').on('click',function() {
+                    $('#addShow1').hide();
+                    $('.page-container3').hide();
+                    $('#imagelist').val('');
+                    $('#img').attr('src','');
+                });
+
+                $('.btn-default').on('click',function() {
+                    $('#addShow1').hide();
+                    $('.page-container3').hide();
+                    $('#imagelist').val('');
+                    $('#img').attr('src','');
+                    $('input').val('');
+                });
+
+            
+
+            // 全选
+            let isChecked = true;
+            $('#allChecked').on('click',function(){
+                //prop() 添加属性(行为的)
+                //attr（）添加属性
+                if(isChecked){
+                    $('#allChecked input').prop('checked','checked');  // 勾选
+                    $('.good_check input').prop('checked','checked');
+
+                } 
+                else{
+                    $('#allChecked input').removeAttr('checked');  // 取消勾选
+                    $('.good_check input').removeAttr('checked');
+
+                }
+                isChecked = !isChecked;
+            });
+
+            // 修改信息
+     
+             $('.edit').on('click',function() {
+                    $('#addShow1').show();
+                    $('.page-container3').show();
+
+                    var img_id = $(this).parents('.text-c').children('.tr_id').html();
+                    var img_type = $(this).parents('.text-c').children('.tr_type').html();
+                    var img_url = $(this).parents('.text-c').children('.tr_img').children('.picture-thumb').attr('src');
+                    var img_name = $(this).parents('.text-c').children('.text-l').html();
+                    // console.log(img_id,img_type,img_url,img_name);
+                    
+                    $('#imgId1').val(img_id);
+                    $('#imgType1').val(img_type);
+                    $('#img1').attr('src',img_url);
+                    $('#imgName1').val(img_name);
+                    url = img_url;
+
+
+                });
+
+                $('#addClose1').on('click',function() {
+                    $('#addShow1').hide();
+                    $('.page-container3').hide();
+                    $('#imagelist').val('');
+                    $('#img').attr('src','');
+                });
+
+                $('.btn-default').on('click',function() {
+                    $('#addShow1').hide();
+                    $('.page-container3').hide();
+                    $('#imagelist').val('');
+                    $('#img').attr('src','');
+                    $('input').val('');
+                });
+
+         }
+
+        });
+
+
+    });
+
+    // 点击上一页
+    $('.cutBtn').on('click',function prev(){
+        var num = $('.tabNum').html();
+        num--;
+        if(num <= 1){
+            num = 1;
+        }
+        $('.tabNum').html(num);
+
+        // 前端请求数据，渲染页面
+
+        console.log(num);
+
+    $.ajax({
+
+         url: OL_Action_Root+'/goods/getGoods',
+         type: 'POST',
+         data:{
+            page: num,
+            pagesize: 3
+         },
+         async: true,
+         // cache: false,
+         // contentType: false,
+         // processData: false,
+
+         success: function(data){
+            
+            var goodslists = data.data.goodslist;
+            console.log(goodslists);
+            // 判断，排序
+            if(ups == 1){
+                goodslists.sort(compareUp);
+            }else if(ups == 2){
+                goodslists.sort(compareDown);
+            }
+
+            $('#tbody').html(goodslists.map(function(item){
+                    return `
+                    <tr class="text-c" data-id="${item.id}">
+                        <td><input name="" type="checkbox" id="checkbox" class="checkbox_0" value=""></td>
+                        <td class="tr_id">${item.id}</td>
+                        <td class="tr_type">${item.type}</td>
+                        <td class="tr_img"><img width="210" height="120px" class="picture-thumb" src="${item.imgpath}" title="点击图片,查看原图"></td>
+                        <td class="text-l">${item.name}</td>
+                        <td class="time">${item.time}</td>
+                        <td class="td-manage"><a style="text-decoration:none" class="edit ml-5" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="delList ml-5" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+                    </tr> `
+                }).join(''));
+
+
+            // 点击预览图，查看原图大图
+            $('.picture-thumb').on('click',function(){
+
+                $('#addShow2').show();
+                $('#imgShowBox').show();
+                $('#imgB').attr('src',$(this).attr('src'));
+
+                $('#addShow2').on('click',function(){
+
+                    $('#addShow2').hide();
+                    $('#imgShowBox').hide();
+                
+                });
+
+            });
+
+
+            $('.delList').on('click',function() {
+                var mes = confirm('确认删除？');
+                if(mes){
+                    $(this).parents('tr').remove();
+                    var ids = $(this).parents('.text-c').attr('data-id');
+                    console.log(ids)
+
+                    $.ajax({
+
+                         url: OL_Action_Root+'/goods/delGoods',
+                         type: 'POST',
+                         data:{
+                            id: ids
+                         },
+                         async: true,
+
+                         success: function(data){
+                          // console.log(888)  
+                         }
+
+                    });
+
+                    // 删除成功后，刷新页面
+                    location.reload();
+                }else{
+
+                }
+                
+            });
+
+
+            // 全选
+            let isChecked = true;
+            $('#allChecked').on('click',function(){
+                //prop() 添加属性(行为的)
+                //attr（）添加属性
+                if(isChecked){
+                    $('#allChecked input').prop('checked','checked');  // 勾选
+                    $('.good_check input').prop('checked','checked');
+
+                } 
+                else{
+                    $('#allChecked input').removeAttr('checked');  // 取消勾选
+                    $('.good_check input').removeAttr('checked');
+
+                }
+                isChecked = !isChecked;
+            });
+
+            // 修改信息
+     
+             $('.edit').on('click',function() {
+                    $('#addShow1').show();
+                    $('.page-container3').show();
+
+                    var img_id = $(this).parents('.text-c').children('.tr_id').html();
+                    var img_type = $(this).parents('.text-c').children('.tr_type').html();
+                    var img_url = $(this).parents('.text-c').children('.tr_img').children('.picture-thumb').attr('src');
+                    var img_name = $(this).parents('.text-c').children('.text-l').html();
+                    // console.log(img_id,img_type,img_url,img_name);
+                    
+                    $('#imgId1').val(img_id);
+                    $('#imgType1').val(img_type);
+                    $('#img1').attr('src',img_url);
+                    $('#imgName1').val(img_name);
+                    url = img_url;
+
+
+                });
+
+                $('#addClose1').on('click',function() {
+                    $('#addShow1').hide();
+                    $('.page-container3').hide();
+                    $('#imagelist').val('');
+                    $('#img').attr('src','');
+                });
+
+                $('.btn-default').on('click',function() {
+                    $('#addShow1').hide();
+                    $('.page-container3').hide();
+                    $('#imagelist').val('');
+                    $('#img').attr('src','');
+                    $('input').val('');
+                });
+
+
+         }
+
+        });
+
+
+    });
+
+
+
+    var tabNum = $('.tabNum').html();
+
+ // 前端请求数据，渲染页面
+
+ function ajax(){
+
+    $.ajax({
+
+         url: OL_Action_Root+'/goods/getGoods',
+         type: 'POST',
+         data:{
+            page: tabNum,
+            pagesize: 3
+         },
+         async: true,
+         // cache: false,
+         // contentType: false,
+         // processData: false,
+
+         success: function(data){
+
+            // console.log(data);
+            var goodslists = data.data.goodslist;
+            // goodslists.sort(compareUp);
+            var totalNum = data.data.total;
+            console.log(totalNum);
+            // 总条数
+            $('#total').html(totalNum);
+
+            $('#tbody').html(goodslists.map(function(item){
+                    return `
+                    <tr class="text-c" data-id="${item.id}">
+                        <td><input name="" type="checkbox" id="checkbox" class="checkbox_0" value=""></td>
+                        <td class="tr_id">${item.id}</td>
+                        <td class="tr_type">${item.type}</td>
+                        <td class="tr_img"><img width="210" height="120px" class="picture-thumb" src="${item.imgpath}" title="点击图片,查看原图"></td>
+                        <td class="text-l">${item.name}</td>
+                        <td class="time">${item.time}</td>
+                        <td class="td-manage"><a style="text-decoration:none" class="edit ml-5" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="delList ml-5" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+                    </tr> `
+                }).join(''));
+
+            // 点击预览图，查看原图大图
+            $('.picture-thumb').on('click',function(){
+
+                $('#addShow2').show();
+                $('#imgShowBox').show();
+                $('#imgB').attr('src',$(this).attr('src'));
+
+                $('#addShow2').on('click',function(){
+
+                    $('#addShow2').hide();
+                    $('#imgShowBox').hide();
+                
+                });
+
+            });
+
+
+            $('.delList').on('click',function() {
+                var mes = confirm('确认删除？');
+                if(mes){
+                    $(this).parents('tr').remove();
+                    var ids = $(this).parents('.text-c').attr('data-id');
+                    console.log(ids)
+
+                    $.ajax({
+
+                         url: OL_Action_Root+'/goods/delGoods',
+                         type: 'POST',
+                         data:{
+                            id: ids
+                         },
+                         async: true,
+
+                         success: function(data){
+                          // console.log(888)  
+                         }
+
+                    });
+
+                    // 删除成功后，刷新页面
+                    location.reload();
+                }else{
+
+                }
+                
+            });
+
+            // 全选
+            var isChecked = true;
+            $('#allCheckbox').on('click',function(){
+                console.log(666)
+                //prop() 添加属性(行为的)
+                //attr（）添加属性
+                if(isChecked){
+                    $('#allCheckbox').prop('checked','checked');  // 勾选
+                    $('#checkbox').prop('checked','checked');
+                    let arr = checkNum();
+
+                } 
+                else{
+                    $('#allCheckbox').removeAttr('checked');  // 取消勾选
+                    $('#checkboc').removeAttr('checked');
+                    let arr = checkNum();
+
+                }
+                isChecked = !isChecked;
+            });
+
+            // 勾选的数量
+            function checkNum(){
+                let arr = []; //创建一个空数组，存放勾选项的索引值
+                let len = $('.good_check input').size();
+                for(let i=0;i<len;i++){
+                    if($('.good_check input').eq(i).prop('checked')){
+                        arr.push(i);
+                    }
+                }
+                // 返回数组arr
+                return arr;
+            }
+
+            // 全选补充
+            $('#Show').on('click','#checkbox',function(){
+                let arr = checkNum();
+                if(arr.length == $('#checkbox').size()){
+                    $('#allCheckbox').prop('checked','checked');
+                }
+                else{
+                    $('#allCheckbox').removeAttr('checked');
+                }
+            });
+
+
+            // 修改信息
+     
+             $('.edit').on('click',function() {
+                    $('#addShow1').show();
+                    $('.page-container3').show();
+
+                    var img_id = $(this).parents('.text-c').children('.tr_id').html();
+                    var img_type = $(this).parents('.text-c').children('.tr_type').html();
+                    var img_url = $(this).parents('.text-c').children('.tr_img').children('.picture-thumb').attr('src');
+                    var img_name = $(this).parents('.text-c').children('.text-l').html();
+                    // console.log(img_id,img_type,img_url,img_name);
+                    
+                    $('#imgId1').val(img_id);
+                    $('#imgType1').val(img_type);
+                    $('#img1').attr('src',img_url);
+                    $('#imgName1').val(img_name);
+                    url = img_url;
+
+
+                });
+
+                $('#addClose1').on('click',function() {
+                    $('#addShow1').hide();
+                    $('.page-container3').hide();
+                    $('#imagelist').val('');
+                    $('#img').attr('src','');
+                });
+
+                $('.btn-default').on('click',function() {
+                    $('#addShow1').hide();
+                    $('.page-container3').hide();
+                    $('#imagelist').val('');
+                    $('#img').attr('src','');
+                    $('input').val('');
+                });
+
+        }
+
+      });
+
+    }
+
+
+    // 上传图片到后端
+
+   function Req_ajax2() {   
+     // console.log(111)
+     console.log($("#imagelist1"))
+     var formData = new FormData()//创建一个formdata对象
+     console.log(formData)
+     formData.append("test",$("#imagelist1")[0].files[0])  
+      console.log(formData)
+       console.log(formData.get('test'))
+     
+     $.ajax({
+         url: OL_Action_Root+'/upload/img',
+         type: 'POST',
+         data: formData,
+         cache: false,
+         contentType: false,
+         processData: false,
+
+         success: function(data){
+             var res = data;
+            // console.log(666);
+             if(res.err == 0)
+             {
+                 $('#img1').attr('src',OL_Action_Root + res.data);
+                 url1 = OL_Action_Root+res.data;
+             }
+             else
+             {
+                 document.getElementById("status").innerHTML = "<span style='color:#EF0000'>文件上传失败！<br>原因是："+res.msg+"</span>";
+             }
+         },
+         error: function(jqXHR, textStatus, errorThrown){
+             document.getElementById("status").innerHTML = "<span style='color:#EF0000'>连接不到服务器，请检查网络！</span>";
+         }
+     });
+ }
+
+  // 向后端数据库中添加上传的图片数据
+
+ function Insert_ajax2() {
+
+    var id = $('#imgId1').val();
+    var type = $('#imgType1').val();
+    var name = $('#imgName1').val();
+    var time = showTime();
+
+    if(url1 == ''){
+        url1 = url;
+    }
+
+    console.log(id,type,name,url1,url);
+
+    $.ajax({
+
+         url: OL_Action_Root+'/goods/updateGoods',
+         type: 'POST',
+         data: {
+            id: id,
+            type: type,
+            imgpath: url1,
+            name: name,
+            time: time
+         },
+         async: true,
+
+         success: function(){
+            console.log(666);
+         }
+
+    });
+
+    alert('图片修改成功！');
+    // 刷新页面
+    location.reload();
+
+}
+
+// 搜索框，模糊词语
+   function souSuo(){
+
+        var word = $('#souText').val();
+
+        $.ajax({
+
+         url: OL_Action_Root+'/goods/findGoodsByKw',
+         type: 'POST',
+         data:{
+            word: word
+         },
+         async: true,
+         // cache: false,
+         // contentType: false,
+         // processData: false,
+
+         success: function(data){
+            // console.log(data);
+            var goodslists = data.data;
+            // console.log(goodslists);
+            var totalNum = data.data.length;
+            console.log(totalNum);
+            // 总条数
+            $('#total').html(totalNum);
+
+            $('#tbody').html(goodslists.map(function(item){
+                return `
+                <tr class="text-c" data-id="${item.id}">
+                    <td><input name="" type="checkbox" id="checkbox" class="checkbox_0" value=""></td>
+                    <td class="tr_id">${item.id}</td>
+                    <td class="tr_type">${item.type}</td>
+                    <td class="tr_img"><img width="210" height="120px" class="picture-thumb" src="${item.imgpath}" title="点击图片,查看原图"></td>
+                    <td class="text-l">${item.name}</td>
+                    <td class="time">${item.time}</td>
+                    <td class="td-manage"><a style="text-decoration:none" class="edit ml-5" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="delList ml-5" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+                </tr> `
+            }).join(''));
+
+
+            // 点击预览图，查看原图大图
+            $('.picture-thumb').on('click',function(){
+
+                $('#addShow2').show();
+                $('#imgShowBox').show();
+                $('#imgB').attr('src',$(this).attr('src'));
+
+                $('#addShow2').on('click',function(){
+
+                    $('#addShow2').hide();
+                    $('#imgShowBox').hide();
+                
+                });
+
+            });
+
+            $('.delList').on('click',function() {
+                var mes = confirm('确认删除？');
+                if(mes){
+                    $(this).parents('tr').remove();
+                    var ids = $(this).parents('.text-c').attr('data-id');
+                    console.log(ids)
+
+                    $.ajax({
+
+                         url: OL_Action_Root+'/goods/delGoods',
+                         type: 'POST',
+                         data:{
+                            id: ids
+                         },
+                         async: true,
+
+                         success: function(data){
+                          // console.log(888)  
+                         }
+
+                    });
+
+                    // 删除成功后，刷新页面
+                    location.reload();
+                }else{
+
+                }
+                
+            });
+
+        }
+
+        });
+
+   }
+
+   // 搜索框查询图片
+     $('#search').on('click',souSuo);
+
+
+    // 打开页面或者刷新页面，获取数据渲染页面
+    ajax();
+
+
+    // ID从低到高排序（升序）
+            function compareUp(obj1,obj2) {
+                var va1 = obj1.id*1;
+                var va2 = obj2.id*1;
+                if(va1 < va2) {
+                    return -1;
+                }
+                else if(va1 > va2) {
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            }
+
+    // ID从高到低排序（降序）
+            function compareDown(obj1,obj2) {
+                var va1 = obj1.id*1;
+                var va2 = obj2.id*1;
+                if(va1 > va2) {
+                    return -1;
+                }
+                else if(va1 < va2) {
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            }
+
+
+    </script>
+</body>
+</html>

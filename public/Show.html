@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="css/base.css" />
+    <link rel="icon" type="image/x-icon" href="./image/icon/show.ico" />
+    <script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <title>商品展示</title>
+    <style>
+        h1 {
+            height: 50px;
+            background: #abcabc;
+            font-size: 20px;
+            line-height: 50px;
+            text-align: center;
+            color: #123;
+            margin-bottom: 10px;
+        }
+
+        .goodsShow {
+            width: 1250px;
+            /* height: 500px; */
+            border: 5px double #abc;
+            border-radius: 10px;
+            margin: 20px auto;
+        }
+
+        ul {
+            width: 1200px;
+            /* height: 450px; */
+            border: 1px solid #666;
+            margin: 5px 15px 10px 15px;
+            padding: 10px;
+            /* 让浮动的li自动撑大ul */
+            overflow: hidden;
+        }
+
+        ul li {
+            width: 155px;
+            height: 240px;
+            border: 1px solid #999;
+            border-radius: 5px;
+            /* background: #ccc; */
+            float: left;
+            margin: 10px;
+            padding: 10px;
+        }
+
+        ul li:hover {
+            border: 1px solid #123;
+        }
+
+        ul li img {
+            width: 155px;
+            height: 96px;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+
+        ul li .name {
+            padding: 5px;
+            width: 145px;
+            font-size: 16px;
+            font-weight: 900;
+            line-height: 20px;
+            color: #123;
+            /* 单行内容超出显示省略号 */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        ul li .name:hover {
+            color: #f00;
+        }
+
+        ul li .desc {
+            width: 155px;
+            height: 54px;
+            font-size: 12px;
+            line-height: 18px;
+            color: #345;
+            display: -webkit-box;
+            /* 多行内容超出显示省略号 */
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+
+        ul li .price {
+            width: 155px;
+            font-size: 18px;
+            line-height: 26px;
+            font-weight: 900;
+            color: #f00;
+        }
+
+        ul li .price:before {
+            content: "￥";
+            font-family: 宋体;
+            font-size: 18px;
+            line-height: 26px;
+            color: #f00;
+        }
+
+        ul li .hot {
+            width: 145px;
+            text-align: right;
+            padding: 0 5px;
+            font-size: 12px;
+            line-height: 26px;
+            color: #678;
+            margin-top: 10px;
+        }
+
+        .nums {
+            width: 120px;
+            height: 30px;
+            padding: 0 10px;
+            font-size: 18px;
+            /* font-weight: 900; */
+            text-align: right;
+            line-height: 30px;
+            float: right;
+            margin: 5px;
+        }
+
+        .go {
+            width: 150px;
+            height: 30px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>商品展示</h1>
+    <div class="goodsShow">
+        <p class="nums"></p>
+        <ul class="showBox">
+            <!-- <li>
+                <img src="./image/1.jpg" alt="" title="商品名称商">
+                <p class="price">123.00</p>
+                <p class="name" title="商品名称商">商品名称商</p>
+                <p class="desc" title="商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述">
+                    商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述商品描述</p>
+                <p class="hot">销量：1000</p>
+            </li> -->
+        </ul>
+    </div>
+
+    <div class="go">
+        返回﹥﹥<a href="http://127.0.0.1:3000/DBMS.html">后台管理</a>
+    </div>
+</body>
+
+<script>
+
+    getGoodslists();
+
+    function getGoodslists() {
+
+        // console.log("发送请求");
+
+        let goodslists = '';
+
+        let total = '';
+
+        let nums = '';
+
+        // 前端请求数据，渲染页面
+
+        $.get('http://127.0.0.1:3000/goodslists/gets', function (data) {
+
+            goodslists = data.data;
+
+            total = data.data.length;
+
+            console.log('商品数据：',data.data);
+
+            nums = '商品数量：' + total;
+
+            $('.nums').text(nums);
+
+            $('.showBox').html(goodslists.map(function (item) {
+                return `
+                    <li>
+                        <img src="${item.imgpath}" alt="" onerror=src="./image/error.png" title="${item.name}">
+                        <p class="price">
+                            ${item.price}
+                        </p>
+                        <p class="name" title="${item.name}">
+                            ${item.name}
+                        </p>
+                        <p class="desc" title="${item.desc}">
+                            ${item.desc}
+                        </p>
+                        <p class="hot">销量：${item.hot}</p>
+                    </li> `;
+
+            }).join(''));
+
+        });
+
+        
+
+    }
+
+</script>
+
+</html>

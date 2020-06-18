@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" type="image/x-icon" href="./image/icon/favicon.ico" />
+    <title>后台管理系统</title>
+    <link rel="stylesheet" type="text/css" href="css/base.css" />
+    <script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <style>
+        h1 {
+            height: 50px;
+            background: #abcabc;
+            font-size: 20px;
+            line-height: 50px;
+            text-align: center;
+            color: #123;
+            margin-bottom: 10px;
+        }
+
+        .names {
+            height: 50px;
+        }
+
+        .texts {
+            height: 80px;
+        }
+
+        .names td {
+            width: 120px;
+            font-weight: 900;
+        }
+
+        .texts td {
+            width: 130px;
+            font-size: 16px;
+            text-align: center;
+            color: #000;
+            padding: 10px;
+            word-break: break-all;
+            /* 数字字母自动换行 */
+            word-wrap: break-word;
+        }
+
+        .ctrl {
+            position: relative;
+        }
+
+        td button {
+            width: 80px;
+            height: 30px;
+            border: 1px solid #f60;
+            font-size: 16px;
+            line-height: 30px;
+            text-align: cenetr;
+            background: #f60;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            position: absolute;
+            top: 90px;
+            right: 36px;
+        }
+
+        td button:active {
+            background: #f30;
+            color: #efefef;
+        }
+
+        td textarea {
+            display: none;
+            width: 100px;
+            height: 180px;
+            border: 1px solid #666;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 14px;
+            color: #123;
+        }
+
+        .editBox {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            width: 600px;
+            height: 240px;
+            background: #fff;
+            border: 1px solid #999;
+            z-index: 10;
+        }
+
+        .editBox .title {
+            height: 30px;
+            font-size: 20px;
+            margin-bottom: 10px;
+            text-align: center;
+            line-height: 30px;
+            padding-top: 10px;
+        }
+
+        .editBox textarea {
+            display: block;
+            margin: 30px auto;
+            padding: 10px;
+            font-size: 20px;
+            line-height: 30px;
+            border: 2px solid #666;
+            border-radius: 5px;
+        }
+
+        .del {
+            width: 30px;
+            height: 30px;
+            border-radius: 15px;
+            font-size: 20px;
+            line-height: 28px;
+            background: #ccc;
+            text-align: center;
+            color: #999;
+            cursor: pointer;
+            position: absolute;
+            top: 82px;
+            right: 40px;
+        }
+
+        .del:hover {
+            background: #aaa;
+            color: #777;
+        }
+
+        .del:active {
+            background: #999;
+            color: #666;
+        }
+
+        .editBox .close,
+        .editBox .enter {
+            width: 80px;
+            height: 30px;
+            font-size: 16px;
+            line-height: 30px;
+            text-align: cenetr;
+            border-radius: 5px;
+            color: #efefef;
+            cursor: pointer;
+            position: absolute;
+            bottom: 20px;
+        }
+
+        .editBox .close {
+            border: 1px solid #f60;
+            background: #f60;
+            left: 80px;
+        }
+
+        .editBox .close:active {
+            background: #f30;
+            color: #fff;
+        }
+
+        .editBox .enter {
+            border: 1px solid #2828FF;
+            background: #2828FF;
+            right: 80px;
+        }
+
+        .editBox .enter:active {
+            background: #0000E3;
+            color: #fff;
+        }
+
+        .mask {
+            display: none;
+            position: fixed;
+            top: 0px;
+            right: 0px;
+            bottom: 0px;
+            left: 0px;
+            background: #333;
+            opacity: 0.8;
+
+        }
+
+        .addBtn {
+            display: block;
+            margin: 20px auto;
+            width: 240px;
+            height: 50px;
+            border: 1px solid #0000E3;
+            font-size: 18px;
+            font-weight: 900;
+            line-height: 50px;
+            text-align: cenetr;
+            background: #0000E3;
+            border-radius: 5px;
+            color: #efefef;
+            cursor: pointer;
+        }
+
+        .addBtn:active {
+            background: #0000C6;
+            color: #fff;
+        }
+
+        .msg {
+            width: 300px;
+            height: 60px;
+            margin: 20px auto;
+            /* border: 1px solid #666; */
+            text-align: center;
+            font-size: 20px;
+            line-height: 60px;
+            color: green;
+            font-weight: 900;
+        }
+
+        .go {
+            width: 150px;
+            height: 30px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>数据后台管理系统</h1>
+    <table border="2px solid #123" cellspacing="0" cellpadding="10" align="center">
+        <tr class="names" align="center">
+            <td>商品名称 (name)</td>
+            <td>商品类别 (type)</td>
+            <td>商品描述 (desc)</td>
+            <td>图片地址 (imgpath)</td>
+            <td>商品价格 (price)</td>
+            <td>人气销量 (hot)</td>
+            <td>更新时间 (time)</td>
+            <td class="ctrl">
+                操作
+                <button onClick="empty()" title="清空所有内容！">清 空</button>
+            </td>
+        </tr>
+        <tr class="texts" align="center">
+            <td class="name" ondblClick="input(event)" title="< 双击 >弹窗编辑输入">
+
+            </td>
+            <td class="type" ondblClick="input(event)" title="< 双击 >弹窗编辑输入">
+
+            </td><!-- 这款豪华紧致面膜，以海藻为基础，加入24K黄金粉末，牛油果提取物和枸杞，赋予肌肤紧致，给予肌肤营养和抗氧化，让肌肤充满活力。含有丰富的微量元素具有修复、保湿、温和去角质，并舒缓肌肤。 -->
+            <td class="desc" ondblClick="input(event)" title="< 双击 >弹窗编辑输入">
+
+            </td>
+            <td class="imgpath" ondblClick="input(event)" title="< 双击 >弹窗编辑输入">
+
+            </td>
+            <td class="price" ondblClick="input(event)" title="< 双击 >弹窗编辑输入">
+
+            </td>
+            <td class="hot" ondblClick="input(event)" title="< 双击 >弹窗编辑输入">
+
+            </td>
+            <td class="time" ondblClick="input(event)" title="< 双击 >获取当前时间输入">
+
+            </td>
+            <td></td>
+        </tr>
+    </table>
+
+    <div class="editBox" ">
+        <!-- 弹窗 -->
+        <h1 class=" title">名称</h1>
+        <textarea name="textarea" id="text" cols="50" rows="1"></textarea>
+        <button class="close" onClick="hide()">取消</button>
+        <button class="enter" onClick="enter()">确定</button>
+        <div class="del" onClick="del()" title="清除内容">×</div> <!-- 一键清除输入框的内容 -->
+    </div>
+    <div class="mask">
+        <!-- 遮罩层 -->
+    </div>
+
+    <button class="addBtn" onClick="addData()">添加到数据库</button>
+    <div class="msg">
+
+    </div>
+
+    <div class="go">
+        前往﹥﹥<a href="http://127.0.0.1:3000/Show.html">商品展示</a>
+    </div>
+
+</body>
+
+<script>
+
+    let at = '';
+    let title = '';
+    let Text = '';
+    let nowTime = '';
+    let Type = '';
+
+    getStorage();    // 打开页面时，首先把缓存的数据拿回来
+
+    function getStorage() {
+
+        $('.name').text(sessionStorage.getItem(".name"));
+        $('.type').text(sessionStorage.getItem(".type"));
+        $('.desc').text(sessionStorage.getItem(".desc"));
+        $('.imgpath').text(sessionStorage.getItem(".imgpath"));
+        $('.price').text(sessionStorage.getItem(".price"));
+        $('.hot').text(sessionStorage.getItem(".hot"));
+        $('.time').text(sessionStorage.getItem(".time"));
+
+    }
+
+    // 点击对应表格框，弹出弹窗输入框
+    function input(event) {
+
+        at = '.' + event.target.className;
+        // console.log(at);
+        if (at == '.name') {
+            title = '商品名称 (name)';
+        }
+        if (at == '.type') {
+            title = '商品类别 (type)';
+        }
+        if (at == '.desc') {
+            title = '商品描述 (desc)';
+        }
+        if (at == '.imgpath') {
+            title = '图片地址 (imgpath)';
+        }
+        if (at == '.price') {
+            title = '商品价格 (price)';
+        }
+        if (at == '.hot') {
+            title = '人气销量 (hot)';
+        }
+        if (at == '.time') {
+            title = '更新时间 (time)';
+            nowTime = showTime();
+        }
+        suiji();
+        show();
+        // console.log(title);
+    }
+
+    function show() {
+        $('.editBox').show();
+        $('.mask').show();
+        $('.title').text(title);
+        $('#text').val($(at).text().trim());        // .trim 去掉首尾的空格
+        if ($(at).text() == 'null') {
+            $('#text').val('');
+        }
+        $('#text').focus();
+        if (at == '.time') {
+            $('#text').val(nowTime);
+        }
+
+        if (at == '.type') {
+            $('#text').val(Type);
+        }
+
+
+    }
+
+    function hide() {
+        $('.editBox').hide();
+        $('.mask').hide();
+    }
+
+    function enter() {
+        hide();
+        Text = $('#text').val();
+        // console.log(Text);
+        $(at).text(Text);
+
+        // 把内容缓存到sessionStorage
+        sessionStorage.setItem(at, Text);
+    }
+
+    function empty() {
+        $('.texts').children().text('');
+        $('.msg').text('');
+    }
+
+    function del() {
+        // 清除输入框的内容
+        // console.log('清除');
+        $('#text').val('').focus();
+    }
+
+    // 生成24位随机数字字母组成的字符串，作为商品的 id 
+    function Random() {
+
+        var charactors = "ab1cd2ef3gh4ij5kl6mn7opq8rst9uvw0xyz";
+        var value = '', i;
+        for (j = 1; j <= 24; j++) {
+            i = parseInt(35 * Math.random());
+            value = value + charactors.charAt(i);
+        }
+        return value;
+
+    }
+
+    function suiji() {
+
+        let x = randomCode(2);
+        // console.log(x);
+        if (x >= 50) {
+            Type = 1;
+        }
+        else if (x < 50) {
+            Type = 2;
+        }
+        // console.log(Type)
+
+    }
+
+    // 添加数据到数据库
+
+    let msg = '';
+
+    function addData() {
+
+        let id = Random();
+        let name = $('.name').text().trim();        // .trim 去掉首尾的空格
+        let type = $('.type').text().trim();
+        let desc = $('.desc').text().trim();
+        let imgpath = $('.imgpath').text().trim();
+        let price = $('.price').text().trim();
+        let hot = $('.hot').text().trim();
+        let time = $('.time').text().trim();
+
+        let Obj = { 'id': id, 'name': name, 'type': type, 'desc': desc, 'imgpath': imgpath, 'price': price, 'hot': hot, 'time': time };
+
+        console.log(Obj);
+
+        if (name == '' || type == '' || desc == '' || imgpath == '' || price == '' || hot == '' || time == '') {
+            $('.msg').text('数据不能有参数为空！请检查！').css('color', 'red');
+            return false;
+        }
+        if (name == 'null' || type == 'null' || desc == 'null' || imgpath == 'null' || price == 'null' || hot == 'null' || time == 'null') {
+            $('.msg').text('数据不能有参数为null！请检查！').css('color', 'red');
+            return false;
+        }
+
+        // 插入数据发送请求前判断数据库中有无这组数据
+
+        let msg = '';  // 判断结果（true, false）
+
+        $.get('http://127.0.0.1:3000/goodslists/gets', function (data) {
+            console.log(data.data)
+            for (var i = 0; i < data.data.length; i++) {
+                if (Obj.name == data.data[i].name && Obj.desc == data.data[i].desc && Obj.imgpath == data.data[i].imgpath && Obj.price == data.data[i].price && Obj.hot == data.data[i].hot) {
+                    $('.msg').text('数据添加失败！数据重复！').css('color', 'red');
+                    msg = 1;
+                    return;
+                }
+                else {
+                    msg = 0;
+                }
+            }
+            if (msg == 0) {
+                // 添加商品数据
+                $.ajax({
+
+                    url: 'http://127.0.0.1:3000/goodslists/addGoodslists',
+                    type: 'POST',
+                    data: Obj,
+                    async: true,
+
+                    success: function (data) {
+
+                        var res = data;
+
+                        console.log(res);
+
+                        msg = res.msg;
+
+                        $('.msg').text('');  // 首先要清空msg栏
+
+                        if (msg == '插入成功！') {
+                            // console.log('成功')
+                            $('.msg').text('数据添加成功！').css('color', 'green');
+                        }
+                        else {
+                            // console.log('失败')
+                            $('.msg').text('数据添加失败！').css('color', 'red');
+                        }
+
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+
+                        console.log(jqXHR, textStatus, errorThrown);
+
+                        $('.msg').text(jqXHR, textStatus, errorThrown);
+
+                    }
+                });
+
+            }
+        });
+
+
+    }
+
+    // function post() {
+
+    //     $.ajax({
+
+    //         url: 'http://127.0.0.1:3000/goodslists/findById',
+    //         type: 'POST',
+    //         data: {
+    //             id: '5daac395a0988e24e8b55785'
+    //         },
+    //         async: true,
+
+    //         success: function (data) {
+    //             console.log(data);
+    //         }
+
+    //     });
+    // }
+
+</script>
+
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Test</title>
+    <script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .box {
+            width: 360px;
+            height: 300px;
+            margin: 10px auto;
+        }
+
+        h1 {
+            font-size: 16px;
+        }
+
+        button {
+            outline-style: none;
+            width: 80px;
+            height: 30px;
+            border: none 0;
+            border-radius: 5px;
+            background: #f50;
+            font-size: 14px;
+            line-height: 30px;
+            text-align: center;
+            color: #efefef;
+            margin: 10px;
+        }
+
+        button:active {
+            background: #f80;
+        }
+
+        .show {
+            width: 300px;
+            height: 160px;
+            border: 1px solid #333;
+            border-radius: 10px;
+            font-size: 12px;
+            line-height: 20px;
+            padding: 20px 30px; 
+            margin-top: 10px;
+        }
+        .img {
+            width: 260px;
+            height: 160px;
+            margin-left: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <h1>请求数据test</h1>
+        <button onClick="sent()">发送请求</button><br>
+        <div class="show">
+            <img class="img" src="" alt="">
+        </div>
+        <button >插入数据</button><br>    <!-- onClick="addGoodslist()" -->
+    </div>
+
+    <script>
+
+        let i = 0;
+        let m = null;
+
+        function sent() {
+            let data = '数据显示';
+            console.log("发送请求");
+
+            // console.log(new Date().getTime());
+            // 前端请求数据，渲染页面
+
+            $.get('http://127.0.0.1:3000/goodslists/gets',function (data) {
+                
+                    m = data.data.length;   // 数据长度
+                
+                    console.log(i,m,data);
+
+                    data = data.data[i].imgpath;
+
+                    $('.img').attr('src',data);
+
+                }
+            )
+
+            i = i+1;
+            
+            if(i==m){
+                i = 0;
+            }
+
+        }
+
+        function addGoodslist() {
+
+            // var formData = new FormData();    // 创建一个formdata对象
+            // console.log(formData);
+            // formData.append("test",$("#imagelist")[0].files[0])  
+            // console.log(formData)
+            // console.log(formData.get('test'))
+
+
+            // 添加商品
+            $.ajax({
+
+                url: 'http://127.0.0.1:3000/goodslists/addGoodslists',
+                type: 'POST',
+                data: {
+                    name:"婴儿沐浴露",
+                    type:"2",
+                    desc:"适合婴儿皮肤的沐浴露",
+                    imgpath:"http://assets.haituncun.com/media/catalog/product/f/b/fbacncos10060003.jpg?imageView2/0/w/200/h/200",
+                    price:"80.0",
+                    hot:"1200",
+                    time:"2019-10-19"
+                },
+                async: true,
+
+                success: function(data){
+                
+                    var res = data;
+
+                    console.log(res.data);
+
+                },
+                error: function(jqXHR, textStatus, errorThrown){
+
+                    console.log(jqXHR, textStatus, errorThrown);
+
+                }
+            });
+
+        }
+
+    </script>
+
+</body>
+
+</html>

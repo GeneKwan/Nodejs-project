@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>测试后端接口</title>
+    <link rel="stylesheet" type="text/css" href="css/base.css" />
+    <script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+    <style>
+        button {
+            margin: 20px 0 0 100px;
+            width: 120px;
+            height: 36px;
+            font-size: 20px;
+            line-height: 36px;
+            border: 0 none;
+            text-align: center;
+            border-radius: 5px;
+            background: #e01028;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        button:active {
+            background: #ce8301 !important;
+            color: #fcf3f3fa !important;
+        }
+
+        img {
+            width: 360px;
+            height: 420px;
+            margin: 60px 0 0 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>后端接口请求测试</h1>
+    <button>点击请求</button>
+    <img src="" alt="">
+    <script>
+        $('button').on('click', function () {
+            console.log('发送请求！');
+
+            let Obj = {
+                'id': '1',
+                'name': '翠鸟',
+                'type': '鸟',
+                'desc': '翠鸟属（学名：Alcedo）的鸟类，属中型水鸟。',
+                'imgpath': 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3888135046,4041525941&fm=26&gp=0.jpg',
+                'price': '125',
+                'hot': '999',
+                'time': '2018-11-09 20:23:54'
+                // {id:'1', name:'翠鸟', type:'分类名称', desc:'翠鸟属（学名：Alcedo）的鸟类，属中型水鸟。', imgpath:'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3888135046,4041525941&fm=26&gp=0.jpg', price:'125', hot:'999', time:'2018-11-09 20:23:54'}
+            };
+
+            // 插入数据发送请求前判断数据库中有无这组数据
+
+            let msg = '';  // 判断结果（true, false）
+
+            $.get('http://127.0.0.1:3000/carts/gets', function (data) {
+                for (var i = 0; i < data.data.length; i++) {
+                    if (Obj.id == data.data[i].id && Obj.name == data.data[i].name) {
+                        alert('数据重复！');
+                        msg = 1;
+                        return;
+                    }
+                    else {
+                        msg = 0;
+                        // console.log(0)
+                    }
+                }
+                if (msg == 0) {
+                    $.ajax({
+
+                        url: 'http://127.0.0.1:3000/carts/addCarts',
+                        type: 'POST',
+                        data: Obj,
+                        async: true,
+
+                        success: function (data) {
+
+                            console.log(data);
+
+                        }
+                    });
+                }
+            });
+
+
+
+
+            $.get('http://127.0.0.1:3000/carts/gets', function (data) {
+                console.log(data.data);
+                // for (var i = 0; i < data.data.length; i++) {
+                //     if (Obj.id == data.data[0].id && Obj.name == data.data[0].name) {
+                //         console.log('数据重复！');
+                //         return false;
+                //     }
+                // }
+                // console.log(data.data[0].name == Obj.name)
+                $('img').attr('src', data.data[0].imgpath);
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/base.css" />
+    <link rel="stylesheet" type="text/css" href="css/Hui-iconfont/1.0.8/iconfont.css" />
+    <style type="text/css">
+        .page-container{
+            width: 620px;height: 300px;padding: 20px 10px;border: 1px solid #aaa;margin: 100px auto;
+        }
+        .til{
+            height: 36px;font-size: 18px;color: #666;font-weight: 900;line-height: 36px;text-align: center;margin-bottom: 20px;background: #efefef;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <div class="til">
+            添加图片
+        </div>
+        <form class="form form-horizontal" id="form-article-add">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>图片标题：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+        <input type="text" class="input-text" value="" placeholder="" id="" name="">
+        </div>
+    </div>
+    <div class="row cl">
+       <label class="form-label col-xs-4 col-sm-2">简略标题：</label>
+       <div class="formControls col-xs-8 col-sm-9">
+        <input type="text" class="input-text" value="" placeholder="" id="" name="">
+    </div>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-2">上传图片：</label>
+        <input type="file" name='image' id="imagelist">
+        <img src="">
+    </div>
+    <div class="row cl">
+        <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+        <button onClick="article_save_submit();" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 提交审核</button>
+        <button onClick="layer_close();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+    </div>
+    </div>
+    </form>
+    </div>
+</body>
+</html>

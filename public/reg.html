@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="css/H-ui.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/base.css" />
+        <link rel="stylesheet" type="text/css" href="css/H-ui.login.css" />
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/Hui-iconfont/1.0.8/iconfont.css" />
+        <script type="text/javascript" src="js/common.js"></script>
+        <style type="text/css">
+            #title{
+                position: absolute;left: 20px;top: 20px;height: 60px;width: 1200px;z-index: 10;
+            }
+            #title h1{
+                height: 36px;font-size: 26px;font-weight: 900;color: #333;text-align: center;margin: 30px auto;
+            }
+            #getCode{
+                display: inline-block;width: 100px;height: 26px;border: 1px solid #999;background: #E4EFF5;margin-left: 20px;font-size: 14px;color: #666;line-height: 26px;text-align: center;cursor: default;
+            }
+            #getCode:hover{
+                color: #58bc58;
+            }
+            #regBtn{
+                width: 160px;height: 36px;background: #f00;font-size: 18px;line-height: 36px;color: #fff;font-weight: 900;
+            }
+            #regBtn:hover{
+                background: #f80;
+            }
+            .denglu{
+              width: 200px;height: 26px;margin: 20px 0 0 425px;color: #666;
+            }
+            .denglu a{
+              text-decoration: underline;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="title">
+            <h1>用户注册界面</h1>
+        </div>
+        <div class="loginWraper">
+          <div id="loginform" class="loginBox">
+            <form class="form form-horizontal" action="index.html" method="post">
+              <div class="row cl">
+                <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60d;</i></label>
+                <div class="formControls col-xs-8">
+                  <input id="mail" name="" type="email" placeholder="邮箱账户" class="input-text size-L">
+                </div>
+              </div>
+              <div class="row cl">
+                <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60e;</i></label>
+                <div class="formControls col-xs-8">
+                  <input id="password" name="" type="password" placeholder="密码" class="input-text size-L">
+                </div>
+              </div>
+              <div class="row cl">
+                <div class="formControls col-xs-8 col-xs-offset-3">
+                  <input class="input-text size-L" id="code" type="text" placeholder="验证码" style="width:150px;">
+                  <input type="button" id="getCode" value="发送验证码" />
+                </div>
+              </div>
+              <div class="row cl">
+                <div class="formControls col-xs-8 col-xs-offset-3">
+                  <input name="" type="button" id="regBtn" value="&nbsp;&nbsp;免&nbsp;费&nbsp;注&nbsp;册&nbsp;&nbsp;">
+                </div>
+              </div>
+            </form>
+            <div class="denglu">
+              已有账号，<a href="./login.html">立即登录</a>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript">
+
+          var OL_Action_Root = "http://127.0.0.1:3000";
+
+          // 邮箱注册获取验证码
+
+            $('#getCode').on('click',function(){
+
+                var mail = $('#mail').val();
+
+                console.log(mail);
+
+                $.ajax({
+
+                     url: OL_Action_Root+'/mailReg/getCode',
+                     type: 'POST',
+                     data: {
+                        mail: mail
+                     },
+                     async: true,
+
+                     success: function(data){
+                        // console.log(data);
+                     }
+
+                });
+                if(mail == ''){
+                  alert('邮箱账号不能为空！');
+                }else{
+                  alert('验证码发送成功！');
+                }
+                
+
+            });
+
+            // 验证验证码，注册
+
+            $('#regBtn').on('click',function(){
+
+                var mail = $('#mail').val();
+                var password = $('#password').val();
+                var code = $('#code').val();
+
+                // console.log(mail,password,code);
+                
+                // 输入框不为空
+                
+                if(mail == '' || password == '' || code == ""){
+                  alert('输入框不能为空！请填写！')
+                }
+
+                $.ajax({
+
+                     url: OL_Action_Root+'/mailReg/reg',
+                     type: 'POST',
+                     data: {
+                        mail: mail,
+                        password: password,
+                        code: code
+                     },
+                     async: true,
+
+                     success: function(data){
+                        // console.log(data);
+                        if(data == '验证码错误！' && code != ''){
+                          alert('验证码错误！');
+                          $('#code').focus();
+                        }else if(data == '插入成功！'){
+                          alert('注册成功！');
+                          location.href = './index.html';
+                        }
+                     }
+
+                });
+
+            });
+
+            // 验证邮箱是否已被注册
+             $('#mail').on('blur',function(){
+
+                var mail = $('#mail').val();
+
+                // console.log(mail);
+
+                $.ajax({
+
+                     url: OL_Action_Root+'/mailReg/findMail',
+                     type: 'POST',
+                     data: {
+                        mail: mail
+                     },
+                     async: true,
+
+                     success: function(data){
+                        // console.log(data);
+                        if(data == '该邮箱已被注册！'){
+                          alert('该邮箱已被注册！');
+                          $('#mail').focus();
+                          $('#mail').val('');
+                        }
+                     }
+
+                });
+
+            });
+
+        </script>
+    </body>
+</html>
